@@ -5,6 +5,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.hand = Hand()
+        self.hand_size = len(self.hand)
 
     def __str__(self):
         return f'player name: {self.name} , player hand:{str(self.hand)}'
@@ -22,6 +23,9 @@ class Player:
         if to_pull:
             print("* pulling from deck")
             self.hand.pull_from_deck(deck)
+            if last_card.name == 'take two':
+                self.hand.pull_from_deck(deck)
+
         else:
             card = optional_cards[0]
             print("* playing:", str(card))
@@ -38,6 +42,9 @@ class Hand:
             hand_str += str(card) + '\n'
         hand_str += '--------------------------'
         return hand_str
+
+    def __len__(self):
+        return len(self.hand)
 
     def init_hand(self, deck):
         for _ in range(INITIAL_NUM_CARDS):

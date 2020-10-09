@@ -14,5 +14,9 @@ class Card:
         """check can put my card on the last card"""
         if 'king' in [self.name, last_card.name]:
             return True
-        if last_card.name == self.name or (last_card.color == self.color and last_card.name != 'take two'):
+        if last_card.name == 'take two' and self.name != 'take two':
+            return False
+        if last_card.name == self.name or last_card.color == self.color:
             return True
+
+        return False

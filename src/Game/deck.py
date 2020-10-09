@@ -46,9 +46,3 @@ class Deck:
         super = [Card('super', name) for name in SUPER_CARDS_NAMES] * 2
         super += [Card('super', SUPER_CARDS_NAMES[0])] * 2
         self.deck += super
-
-
-if __name__ == '__main__':
-    deck = Deck()
-    for i in range(130):
-        deck.pull()
