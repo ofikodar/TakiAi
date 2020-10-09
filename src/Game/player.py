@@ -12,12 +12,20 @@ class Player:
     def create_hand(self, deck):
         self.hand.init_hand(deck)
 
-    def play(self, last_card):
+    def play(self, last_card, deck):
         """if player can play, not stopped
-        last card can be stop form the player before 2 turns"""
-        print(self.hand)
+        last card can be stop form the player before 2 turns.
+        let the player always play the first optional card or only to pull
+        """
         optional_cards = self.hand.get_optional_cards(last_card)
-        [print(card) for card in optional_cards]
+        to_pull = len(optional_cards) == 0
+        if to_pull:
+            print("* pulling from deck")
+            self.hand.pull_from_deck(deck)
+        else:
+            card = optional_cards[0]
+            print("* playing:", str(card))
+            self.hand.play_card(card)
 
 
 class Hand:
@@ -36,6 +44,15 @@ class Hand:
             card = deck.pull()
             self.hand.append(card)
 
+    def pull_from_deck(self, deck):
+        card = deck.pull()
+        self.hand.append(card)
+
+    def play_card(self, play_card):
+        for i, hand_card in enumerate(self.hand):
+            if hand_card == play_card:
+                del self.hand[i]
+                return
+
     def get_optional_cards(self, last_card):
         return [card for card in self.hand if card.is_playable(last_card)]
-

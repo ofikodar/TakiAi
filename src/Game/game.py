@@ -25,7 +25,7 @@ class Game:
 
     def turn(self, player_index):
         current_player = self.players[player_index]
-        current_player.play(self.last_card)
+        current_player.play(self.last_card, self.deck)
 
 
 if __name__ == '__main__':
