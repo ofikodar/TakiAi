@@ -22,19 +22,27 @@ class Game:
         for player in self.players:
             player.create_hand(self.deck)
         self.last_card = self.deck.get_first_card()
-        print("last card:", self.last_card)
 
     def _check_win(self, player):
         return player.hand_size == 0
 
     def start(self):
+        game_steps = 100
+        steps_count = 0
         index = 0
-        while True:
+        while steps_count < game_steps:
+
+            print("last card:", self.last_card)
             current_player = self.players[index]
-            current_player.play(self.last_card, self.deck)
+            print(f"player {current_player.name} turn")
+            self.last_card = current_player.play(self.last_card, self.deck)
+            print("------------------------")
+
             if self._check_win(current_player):
                 print(f"player {current_player.name} wins..")
-                exit()
+                break
+            index = self.turn.whose_turn(self.last_card)
+            steps_count += 1
 
 
 class Turn:

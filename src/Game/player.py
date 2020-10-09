@@ -5,13 +5,13 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.hand = Hand()
-        self.hand_size = len(self.hand)
 
     def __str__(self):
         return f'player name: {self.name} , player hand:{str(self.hand)}'
 
     def create_hand(self, deck):
         self.hand.init_hand(deck)
+        self.hand_size = len(self.hand)
 
     def play(self, last_card, deck):
         """if player can play, not stopped
@@ -30,6 +30,8 @@ class Player:
             card = optional_cards[0]
             print("* playing:", str(card))
             self.hand.play_card(card)
+            last_card = card
+        return last_card
 
 
 class Hand:
