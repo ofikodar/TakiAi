@@ -7,7 +7,7 @@ class Game:
         self.num_players = num_players
         self.players = []
         self.deck = Deck()
-        self.turn = Turn(num_players)
+        self.turn = Rules(num_players)
         self.last_card = None
         self.take_two_acc = 0
 
@@ -50,7 +50,8 @@ class Game:
 
         [print(player.hand_size) for player in self.players]
 
-class Turn:
+
+class Rules:
     def __init__(self, num_players):
         self.num_players = num_players
         self.player_index = 0
@@ -69,7 +70,8 @@ class Turn:
             last_card.used = True
         elif last_card.name == 'king' and not last_card.used:
             last_card.used = True
-
+        elif 'taki' in last_card.name and not last_card.used:
+            last_card.used = True
         else:
             self._update_index()
         return self.player_index

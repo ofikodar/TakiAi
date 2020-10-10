@@ -36,7 +36,8 @@ class Deck:
         random.shuffle(self.deck)
 
     def _create_regulars(self):
-        regulars = [Card('regular', number, color) for color in CARD_COLORS for number in range(1, 10) for _ in range(2)]
+        regulars = [Card('regular', str(number), color) for color in CARD_COLORS for number in range(1, 10) for _ in
+                    range(2)]
         self.deck += regulars
 
     def _create_strong(self):

@@ -1,3 +1,7 @@
+import random
+
+from src.Game.deck import CARD_COLORS
+
 INITIAL_NUM_CARDS = 8
 
 
@@ -16,7 +20,7 @@ class Player:
     def play(self, last_card, deck, take_two_acc):
         """if player can play, not stopped
         last card can be stop form the player before 2 turns.
-        let the player always play the first optional card or only to pull
+        let the player always play random optional card or only to pull
         """
         optional_cards = self.hand.get_optional_cards(last_card)
         to_pull = len(optional_cards) == 0
@@ -31,16 +35,33 @@ class Player:
                 self.hand_size += 1
             take_two_acc = 0
         else:
-            card = optional_cards[0]
-            print("* playing:", str(card))
+            card = random.choice(optional_cards)
             self.hand.play_card(card)
             self.hand_size -= 1
+            print("* playing:", str(card))
+
+            if card.name == 'take two' and not card.used:
+                take_two_acc += 2
+            if card.name == 'king' and not card.used:
+                take_two_acc = 0
+
+            if card.name == 'change color':
+                card.color = random.choice(CARD_COLORS)
+            if card.name == 'super taki':
+                card.color = last_card.color if last_card.color is not None else random.choice(CARD_COLORS)
+                print("* super taki color:", card.color)
+
+            if 'taki' in card.name:
+                taki_on = True
+                optional_cards = self.hand.get_optional_cards(card, taki_on)
+                while len(optional_cards) != 0 and card.name != 'change color' and self.hand_size != 0:
+                    card = random.choice(optional_cards)
+                    self.hand.play_card(card)
+                    self.hand_size -= 1
+                    print("* playing:", str(card))
+                    optional_cards = self.hand.get_optional_cards(card)
 
             last_card = card
-            if last_card.name == 'take two' and not last_card.used:
-                take_two_acc += 2
-            if last_card.name == 'king' and not last_card.used:
-                take_two_acc = 0
 
         return last_card, take_two_acc
 
@@ -74,5 +95,5 @@ class Hand:
                 del self.hand[i]
                 return
 
-    def get_optional_cards(self, last_card):
-        return [card for card in self.hand if card.is_playable(last_card)]
+    def get_optional_cards(self, last_card, taki_on=False):
+        return [card for card in self.hand if card.is_playable(last_card,taki_on)]
