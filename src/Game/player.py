@@ -22,7 +22,11 @@ class Player:
         last card can be stop form the player before 2 turns.
         let the player always play random optional card or only to pull
         """
+        print(self.hand)
         optional_cards = self.hand.get_optional_cards(last_card)
+        print("-------------optional------------")
+        [print(card) for card in optional_cards]
+        print('----------------------------------')
         to_pull = len(optional_cards) == 0
         if to_pull:
             pull_num = 1
@@ -52,14 +56,16 @@ class Player:
                 print("* super taki color:", card.color)
 
             if 'taki' in card.name:
-                taki_on = True
-                optional_cards = self.hand.get_optional_cards(card, taki_on)
-                while len(optional_cards) != 0 and card.name != 'change color' and self.hand_size != 0:
+                taki_color = card.color
+                optional_cards = self.hand.get_optional_cards(card, taki_color)
+                while len(optional_cards) != 0 and card.name not in ['change color','king'] and self.hand_size != 0:
                     card = random.choice(optional_cards)
                     self.hand.play_card(card)
                     self.hand_size -= 1
                     print("* playing:", str(card))
-                    optional_cards = self.hand.get_optional_cards(card)
+                    optional_cards = self.hand.get_optional_cards(card, taki_color)
+                if card.name == 'change color':
+                    card.color = random.choice(CARD_COLORS)
 
             last_card = card
 
@@ -95,5 +101,5 @@ class Hand:
                 del self.hand[i]
                 return
 
-    def get_optional_cards(self, last_card, taki_on=False):
-        return [card for card in self.hand if card.is_playable(last_card,taki_on)]
+    def get_optional_cards(self, last_card, taki_color=None):
+        return [card for card in self.hand if card.is_playable(last_card,taki_color)]

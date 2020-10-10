@@ -4,7 +4,7 @@ from src.Game.cards import Card
 
 CARD_COLORS = ['red', 'yellow', 'blue', 'green']
 STRONG_CARDS_NAMES = ['change direction', 'stop', 'taki', 'add one', 'take two']
-SUPER_CARDS_NAMES = ['change color', 'super taki', 'king']
+SUPER_CARDS_NAMES = ['change color', 'super taki', 'king'] * 4
 
 
 class Deck:

@@ -11,11 +11,15 @@ class Card:
     def __str__(self):
         return f"name: {self.name}, color: {self.color}"
 
-    def is_playable(self, last_card, taki_on=False):
+    def is_playable(self, last_card, taki_color=None):
         """check can put my card on the last card"""
 
-        if taki_on :
-            return last_card.color == self.color
+        if taki_color is not None :
+            same_color = taki_color == self.color
+            super_cards = self.type == 'super'
+            if self.name == 'super taki':
+                self.color = taki_color
+            return  same_color or super_cards
 
 
         if 'king' in [self.name, last_card.name]:
