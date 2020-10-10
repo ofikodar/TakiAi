@@ -18,6 +18,7 @@ class Deck:
     def pull(self):
         if len(self.deck) == 0:
             self._create_cards()
+            print("finished deck")
         card = self.deck[0]
         del self.deck[0]
         return card
@@ -35,14 +36,14 @@ class Deck:
         random.shuffle(self.deck)
 
     def _create_regulars(self):
-        regulars = [Card('regular', number, color) for color in CARD_COLORS for number in range(1, 10)] * 2
+        regulars = [Card('regular', number, color) for color in CARD_COLORS for number in range(1, 10) for _ in range(2)]
         self.deck += regulars
 
     def _create_strong(self):
-        strong = [Card('strong', name, color) for color in CARD_COLORS for name in STRONG_CARDS_NAMES] * 2
+        strong = [Card('strong', name, color) for color in CARD_COLORS for name in STRONG_CARDS_NAMES for _ in range(2)]
         self.deck += strong
 
     def _create_super(self):
-        super = [Card('super', name) for name in SUPER_CARDS_NAMES] * 2
-        super += [Card('super', SUPER_CARDS_NAMES[0])] * 2
+        super = [Card('super', name) for name in SUPER_CARDS_NAMES for _ in range(2)]
+        super += [Card('super', SUPER_CARDS_NAMES[0]) for _ in range(2)]
         self.deck += super

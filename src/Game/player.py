@@ -13,7 +13,7 @@ class Player:
         self.hand.init_hand(deck)
         self.hand_size = len(self.hand)
 
-    def play(self, last_card, deck):
+    def play(self, last_card, deck, take_two_acc):
         """if player can play, not stopped
         last card can be stop form the player before 2 turns.
         let the player always play the first optional card or only to pull
@@ -21,17 +21,28 @@ class Player:
         optional_cards = self.hand.get_optional_cards(last_card)
         to_pull = len(optional_cards) == 0
         if to_pull:
-            print("* pulling from deck")
-            self.hand.pull_from_deck(deck)
-            if last_card.name == 'take two':
+            pull_num = 1
+            if last_card.name == 'take two' and not last_card.used:
+                last_card.used = True
+                pull_num = take_two_acc
+            for _ in range(pull_num):
+                print("* pulling from deck")
                 self.hand.pull_from_deck(deck)
-
+                self.hand_size += 1
+            take_two_acc = 0
         else:
             card = optional_cards[0]
             print("* playing:", str(card))
             self.hand.play_card(card)
+            self.hand_size -= 1
+
             last_card = card
-        return last_card
+            if last_card.name == 'take two' and not last_card.used:
+                take_two_acc += 2
+            if last_card.name == 'king' and not last_card.used:
+                take_two_acc = 0
+
+        return last_card, take_two_acc
 
 
 class Hand:

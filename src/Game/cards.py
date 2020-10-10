@@ -3,6 +3,7 @@ class Card:
         self.name = name
         self.color = color
         self.type = type
+        self.used = False
 
     def __eq__(self, other):
         return other.name == self.name and other.color == self.color
@@ -20,3 +21,6 @@ class Card:
             return True
 
         return False
+
+
+
